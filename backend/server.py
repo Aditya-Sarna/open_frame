@@ -25,7 +25,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field
 from starlette.middleware.cors import CORSMiddleware
 
-from emergentintegrations.llm.chat import LlmChat, UserMessage
+from groq import AsyncGroq
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
@@ -38,8 +38,8 @@ mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ["DB_NAME"]]
 
-EMERGENT_LLM_KEY = os.environ.get("EMERGENT_LLM_KEY")
-LLM_MODEL = ("anthropic", "claude-sonnet-4-5-20250929")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+LLM_MODEL = "llama-3.3-70b-versatile"
 
 app = FastAPI(title="OpenFrame API")
 api_router = APIRouter(prefix="/api")
@@ -52,15 +52,19 @@ logger = logging.getLogger("openframe")
 # LLM helpers
 # ---------------------------------------------------------------------------
 
-def _new_chat(system_message: str) -> LlmChat:
-    if not EMERGENT_LLM_KEY:
-        raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured on server.")
-    chat = LlmChat(
-        api_key=EMERGENT_LLM_KEY,
-        session_id=str(uuid.uuid4()),
-        system_message=system_message,
-    ).with_model(*LLM_MODEL)
-    return chat
+async def _llm_chat(system_message: str, user_message: str) -> str:
+    if not GROQ_API_KEY:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY not configured on server.")
+    client_groq = AsyncGroq(api_key=GROQ_API_KEY)
+    completion = await client_groq.chat.completions.create(
+        model=LLM_MODEL,
+        messages=[
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": user_message},
+        ],
+        temperature=0.1,
+    )
+    return completion.choices[0].message.content
 
 
 def _extract_json(text: str) -> Any:
@@ -213,9 +217,7 @@ async def parse_cobol(req: ParseCobolRequest) -> ParseCobolResponse:
         "Compute length in bytes for PIC clauses (e.g. PIC X(10) -> 10, PIC 9(5)V99 COMP-3 -> 4). "
         "Return ONLY JSON, no prose."
     )
-    chat = _new_chat(system)
-    user = UserMessage(text=f"Parse this COBOL copybook:\n\n{req.copybook}")
-    raw = await chat.send_message(user)
+    raw = await _llm_chat(system, f"Parse this COBOL copybook:\n\n{req.copybook}")
     data = _extract_json(raw)
     try:
         parsed = ParseCobolResponse.model_validate(data)
@@ -255,13 +257,7 @@ async def map_schema(req: MapSchemaRequest) -> MapSchemaResponse:
         "`ddl` must be a valid CREATE TABLE statement for the target. "
         "Return ONLY JSON."
     )
-    chat = _new_chat(system)
-    payload = {
-        "target": req.target,
-        "table_name": table_name,
-        "fields": [f.model_dump() for f in req.fields],
-    }
-    raw = await chat.send_message(UserMessage(text=json.dumps(payload)))
+    raw = await _llm_chat(system, json.dumps(payload))
     data = _extract_json(raw)
     data.setdefault("target", req.target)
     data.setdefault("table_name", table_name)
@@ -385,7 +381,6 @@ async def validate_data(req: ValidateDataRequest) -> ValidateDataResponse:
         "orphaned foreign keys, date-format drift, EBCDIC residue (non-printable bytes). "
         "Return ONLY JSON."
     )
-    chat = _new_chat(system)
     payload = {
         "table_name": req.table_name,
         "rules": req.rules or [
@@ -396,7 +391,7 @@ async def validate_data(req: ValidateDataRequest) -> ValidateDataResponse:
         ],
         "sample_rows": req.sample_rows[:50],
     }
-    raw = await chat.send_message(UserMessage(text=json.dumps(payload)))
+    raw = await _llm_chat(system, json.dumps(payload))
     data = _extract_json(raw)
     try:
         report = ValidateDataResponse.model_validate(data)

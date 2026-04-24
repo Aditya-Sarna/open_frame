@@ -7,7 +7,7 @@ import { listRuns } from "@/lib/api";
 
 const STATS = [
     { label: "Pipeline Stages", value: "04", hint: "extract · convert · transform · load" },
-    { label: "Model Params", value: "4.5T", hint: "claude sonnet 4.5" },
+    { label: "Model Params", value: "70B", hint: "llama 3.3 70b" },
     { label: "COBOL Types", value: "32+", hint: "pic · comp · redefines · occurs" },
     { label: "Cloud Targets", value: "06", hint: "postgres · bigquery · snowflake …" },
 ];
@@ -302,10 +302,10 @@ export default function Dashboard() {
                     </p>
                     <div className="grid grid-cols-1 gap-0 border border-white/10 font-mono text-[11px]">
                         {[
-                            ["model", "claude-sonnet-4.5"],
-                            ["provider", "emergent · anthropic"],
-                            ["context", "200k tokens"],
-                            ["latency p95", "< 2.0s"],
+                            ["model", "llama-3.3-70b-versatile"],
+                            ["provider", "groq"],
+                            ["context", "128k tokens"],
+                            ["latency p95", "< 1.0s"],
                         ].map(([k, v], i, arr) => (
                             <div
                                 key={k}
