@@ -62,7 +62,7 @@ export default function Dashboard() {
     const [runs, setRuns] = useState([]);
 
     useEffect(() => {
-        listRuns(5).then(setRuns).catch(() => setRuns([]));
+        listRuns(5).then(data => setRuns(Array.isArray(data) ? data : [])).catch(() => setRuns([]));
     }, []);
 
     return (

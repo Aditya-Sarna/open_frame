@@ -34,5 +34,5 @@ export async function validateData(payload) {
 
 export async function listRuns(limit = 10) {
     const { data } = await api.get(`/runs?limit=${limit}`);
-    return data;
+    return Array.isArray(data) ? data : [];
 }
