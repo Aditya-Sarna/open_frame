@@ -76,7 +76,7 @@ export default function Validation() {
                         <div className="absolute inset-0 grid place-items-center pointer-events-none">
                             <div className="text-center">
                                 <div className="heading-mono text-5xl tracking-tighter text-zinc-50">
-                                    {report?.quality_score?.toFixed(1) ?? "—"}
+                                    {report?.quality_score != null ? Number(report.quality_score).toFixed(1) : "—"}
                                 </div>
                                 <div className="font-mono text-[10px] uppercase tracking-[0.35em] text-zinc-500 mt-1">
                                     / 100
@@ -114,8 +114,8 @@ export default function Validation() {
                         <ReconCell
                             label="drift"
                             value={
-                                report?.reconciliation?.drift_pct !== undefined
-                                    ? `${report.reconciliation.drift_pct.toFixed(2)}%`
+                                report?.reconciliation?.drift_pct != null
+                                    ? `${Number(report.reconciliation.drift_pct).toFixed(2)}%`
                                     : "—"
                             }
                             warn={report?.reconciliation?.drift_pct > 1}
