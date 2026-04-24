@@ -1,0 +1,113 @@
+{
+  "project_name": "Mainframe Data Modernization",
+  "theme_and_archetype": {
+    "domain": "Enterprise SaaS / Developer Tooling / Mainframe Modernization",
+    "theme": "Dark",
+    "archetype": "Archetype 4 (Swiss & High-Contrast) + Terminal Retro-Futurism",
+    "rationale": "For mainframe modernization, a dark 'terminal-inspired' aesthetic bridges the legacy of COBOL with modern cloud infrastructure. By combining stark, high-contrast structural borders with mono typography, we evoke nostalgia without sacrificing the precision of a high-end developer tool like Linear or Datadog."
+  },
+  "colors": {
+    "background": {
+      "page": "#000000",
+      "sidebar": "#09090B",
+      "card": "#0A0A0A",
+      "input": "#09090B"
+    },
+    "text": {
+      "primary": "#F4F4F5",
+      "secondary": "#A1A1AA",
+      "muted": "#52525B",
+      "accent": "#10B981"
+    },
+    "border": {
+      "default": "rgba(255, 255, 255, 0.1)",
+      "hover": "rgba(255, 255, 255, 0.2)",
+      "focus": "#10B981"
+    },
+    "accents": {
+      "primary": "#10B981",
+      "primary_hover": "#059669",
+      "amber_warning": "#F59E0B",
+      "terminal_glow": "rgba(16, 185, 129, 0.2)",
+      "cobol_blue": "#3B82F6"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "headings": "'JetBrains Mono', monospace",
+      "body": "'IBM Plex Sans', sans-serif",
+      "data_labels": "'JetBrains Mono', monospace"
+    },
+    "scales": {
+      "h1": "text-4xl sm:text-5xl tracking-tighter uppercase font-medium",
+      "h2": "text-2xl sm:text-3xl tracking-tight",
+      "h3": "text-xl sm:text-2xl tracking-tight",
+      "h4": "text-lg uppercase tracking-widest font-semibold text-zinc-400",
+      "body": "text-base text-zinc-300 leading-relaxed",
+      "small": "text-sm text-zinc-500",
+      "mono_data": "text-xs font-mono text-emerald-400"
+    },
+    "rules": [
+      "Never use Inter for headings.",
+      "Uppercase and heavy letter-spacing (tracking-[0.2em]) for all small labels and table headers.",
+      "Use mono fonts specifically for all COBOL code, PIC clauses, and data types."
+    ]
+  },
+  "spacing_and_layout": {
+    "philosophy": "Control Room Grid. Dense, structured, highly scannable.",
+    "container_padding": "p-6 md:p-8",
+    "grid_gap": "gap-4 md:gap-6",
+    "border_radius": "rounded-sm md:rounded-none",
+    "dashboard_grid": "grid-cols-1 md:grid-cols-4",
+    "mapper_layout": "grid-cols-1 lg:grid-cols-2 gap-8 relative"
+  },
+  "surfaces_and_micro_themes": {
+    "dashboard_cards": {
+      "style": "Grid Borders (The Technical Look). Flat background, 1px subtle border, no shadow.",
+      "hover": "Border color shifts to emerald-500/50, subtle background tint (bg-zinc-900/50)."
+    },
+    "terminal_console": {
+      "style": "Retro-Futurism. Deep black background, phosphor green text for logs, scanline background overlay pattern."
+    },
+    "glass_overlays": {
+      "style": "Crystal Glass for sticky headers or modals. bg-black/80 backdrop-blur-xl border-b border-white/10."
+    }
+  },
+  "component_instructions": {
+    "sidebar": "Fixed width, dark zinc background (bg-zinc-950), right border border-white/10. Mono font for links. Active link has left green border (border-l-2 border-emerald-500) and white text.",
+    "dashboard_hero": "Span full width. Deep black background with subtle grid texture image. High-contrast typography showcasing system status.",
+    "stats_cards": "Use 'Control Room' grid layout. Large mono numbers (text-4xl), small uppercase labels (text-xs).",
+    "cobol_parser": "Use Shadcn Table. Dense styling. Header background bg-zinc-900. Zebra striping for rows. Mono font for 'Data Type' and 'PIC' columns. Include a drag-and-drop zone using dashed borders (border-white/20).",
+    "schema_mapper": "Two side-by-side lists. Left: COBOL Source, Right: Target Cloud DB. Use absolute positioned SVG lines or custom 'diff' styling (green background tint for new/mapped fields) to connect them visually.",
+    "migration_pipeline": "Stepper component to show stages (Extract -> Parse -> Map -> Convert -> Load). Include a simulated terminal window (bg-black text-emerald-500 font-mono) showing real-time EBCDIC to ASCII conversion logs.",
+    "data_validation": "Use Shadcn Tabs for Rules vs Anomalies. Gauge chart (recharts) for Quality Score. Audit log in a dense table format.",
+    "buttons": "Primary: Flat bg-emerald-600 text-white hover:bg-emerald-500. Secondary: Flat border border-zinc-700 bg-transparent text-zinc-300 hover:bg-zinc-800.",
+    "data_testids": "Ensure all interactive elements (buttons, inputs, tabs, row actions) have descriptive data-testid attributes."
+  },
+  "motion_and_interactions": {
+    "hover_states": "Crisp, instantaneous color transitions. No bouncy scaling. Focus states must have high-contrast ring (focus:ring-2 focus:ring-emerald-500).",
+    "page_transitions": "Subtle fade-in for data grids (staggered entrance).",
+    "loading": "Terminal-style blinking cursor or ASCII-style progress bars instead of standard spinners."
+  },
+  "media": {
+    "image_urls": {
+      "dashboard_hero_bg": {
+        "url": "https://images.unsplash.com/photo-1766898588954-76c299003121?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGRhcmslMjB0ZWNobmljYWwlMjBncmlkJTIwY29kZSUyMG1haW5mcmFtZXxlbnwwfHx8fDE3NzcwNjMzMTl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract technical grid pattern for hero section background overlay (use with heavy black opacity like bg-black/80).",
+        "placement": "Dashboard Hero Section Background"
+      },
+      "code_texture": {
+        "url": "https://images.pexels.com/photos/6424587/pexels-photo-6424587.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Programming code overlay for parser/mapper empty states or login screens.",
+        "placement": "Empty state backgrounds or decorative accents"
+      }
+    }
+  },
+  "dependencies_to_install": [
+    "lucide-react",
+    "recharts",
+    "framer-motion",
+    "clsx",
+    "tailwind-merge"
+  ]
+}
