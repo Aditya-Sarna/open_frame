@@ -94,8 +94,8 @@ export default function Sidebar() {
                     </span>
                 </div>
                 <div className="font-mono text-[10px] text-zinc-600 leading-relaxed">
-                    <div>model · claude-sonnet-4.5</div>
-                    <div>latency · &lt; 2s · p95</div>
+                    <div>model · llama-3.3-70b</div>
+                    <div>latency · &lt; 1s · p95</div>
                     <div>build · 2026.12.r1</div>
                 </div>
             </div>

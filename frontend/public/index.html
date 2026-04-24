@@ -24,6 +24,7 @@
         -->
         <title>OpenFrame — Mainframe Data Modernization</title>
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
+        <script>if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(function(r){for(let s of r)s.unregister();});}</script>
 
     </head>
     <body>
